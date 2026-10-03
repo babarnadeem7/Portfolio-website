@@ -1,0 +1,55 @@
+/*
+ * Design tokens. Mapped into Tailwind in app/globals.css (@theme inline).
+ * Contrast is verified for WCAG AA. See CLAUDE.md before changing values.
+ */
+:root {
+  color-scheme: light;
+  --canvas: #edebe6;
+  --frame: #f8f7f4;
+  --ink: #111111;
+  --ink-muted: #5a5752;
+  --line: #d6d3cc;
+  --accent: #ea4416;
+  --accent-ink: #b8340d;
+  --on-accent: #111111;
+  --dot: rgb(17 17 17 / 0.12);
+  --selection-fill: rgb(234 68 22 / 0.08);
+  --shadow-frame: 0 1px 0 rgb(17 17 17 / 0.04), 0 18px 50px -24px rgb(17 17 17 / 0.25);
+
+  /* Layout */
+  --gutter: clamp(16px, 2vw, 32px);
+  --page-x: clamp(16px, 4vw, 64px);
+  --header-h: 64px;
+  --radius-frame: 4px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #121212;
+  --frame: #1b1b1b;
+  --ink: #edebe6;
+  --ink-muted: #a3a09a;
+  --line: #2c2c2c;
+  --accent: #ff6a3d;
+  --accent-ink: #ff8a66;
+  --on-accent: #111111;
+  --dot: rgb(237 235 230 / 0.09);
+  --selection-fill: rgb(255 106 61 / 0.1);
+  --shadow-frame: 0 1px 0 rgb(0 0 0 / 0.4), 0 18px 50px -24px rgb(0 0 0 / 0.8);
+}
+
+/* No-JS fallback: follow the OS when no theme attribute has been set. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --canvas: #121212;
+    --frame: #1b1b1b;
+    --ink: #edebe6;
+    --ink-muted: #a3a09a;
+    --line: #2c2c2c;
+    --accent: #ff6a3d;
+    --accent-ink: #ff8a66;
+    --dot: rgb(237 235 230 / 0.09);
+    --selection-fill: rgb(255 106 61 / 0.1);
+  }
+}

@@ -1,0 +1,166 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant pointer-fine (@media (hover: hover) and (pointer: fine));
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-frame: var(--frame);
+  --color-ink: var(--ink);
+  --color-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-strong: cubic-bezier(0.76, 0, 0.24, 1);
+
+  --breakpoint-3xl: 120rem;
+}
+
+/* ---------- Fluid type scale ---------- */
+@utility text-hero {
+  font-size: clamp(3.4rem, 21vw, 32rem);
+  line-height: 0.84;
+  letter-spacing: -0.012em;
+  @media (width >= 48rem) {
+    font-size: clamp(3.4rem, 17vw, 32rem);
+  }
+}
+@utility text-display {
+  font-size: clamp(2.6rem, 8vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+@utility text-title {
+  font-size: clamp(1.9rem, 4.2vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+@utility text-lead {
+  font-size: clamp(1.35rem, 2.6vw, 2.9rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+@utility text-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+@utility font-condensed {
+  font-variation-settings: "wdth" 75;
+}
+@utility px-page {
+  padding-inline: var(--page-x);
+}
+
+/* Animated underline: draws in from the left, leaves to the right. */
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.5s var(--ease-out-expo);
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+    background-position: 0% 100%;
+  }
+}
+
+@keyframes cue {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
+}
+
+@keyframes march {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    background: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100svh;
+    font-family: var(--font-sans);
+    background-color: var(--canvas);
+    background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+/* Custom cursor active: hide the native one (fine pointers only, set from JS). */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+/* Repeat visits and reduced motion: never paint the preloader. */
+html[data-intro="skip"] [data-preloader] {
+  display: none;
+}
+
+/* Theme switch: driven by the View Transitions API from JS. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Hidden but available to assistive tech. */
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
